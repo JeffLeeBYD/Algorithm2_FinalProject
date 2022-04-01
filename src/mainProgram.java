@@ -1,10 +1,8 @@
-import java.io.File;
 import java.util.Scanner;
 
 public class mainProgram {
 
     public static void main(String[] args) {
-        File file = new File("stop_times.txt");
         boolean quit = false;
         while (!quit) {
             Scanner sc = new Scanner(System.in);
@@ -30,6 +28,7 @@ public class mainProgram {
                         } else if (function == 2) {
 
                         } else {
+                            functionality3.func3();
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
