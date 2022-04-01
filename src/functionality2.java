@@ -1,3 +1,0 @@
-public class functionality2 {
-
-}
