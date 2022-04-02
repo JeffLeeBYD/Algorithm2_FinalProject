@@ -38,18 +38,18 @@ public class functionality3 {
                 // print out the file
                 if (results.size() > 0) {               // if the result list is not empty, print out results
                     Collections.sort(results);
-                    ArrayList<String> title = new ArrayList<String>(Arrays.asList("trip_id", "arrival_time", "departure_time", "stop_id",
+                    ArrayList<String> title = new ArrayList<>(Arrays.asList("trip_id", "arrival_time", "departure_time", "stop_id",
                             "stop_sequence", "stop_headsign", "pickup_type", "drop_off_type", "shape_dist_traveled"));
                     System.out.println("searching result: \n=============================================");
                     for (String line : results){
                         if (line.endsWith(","))
                             line += " ";
                         String[] lineArray = line.split(",");
-                        StringBuilder splitted = new StringBuilder();
+                        StringBuilder split = new StringBuilder();
                         for (int i = 0; i < title.size(); i++){
-                            splitted.append(title.get(i) + ": " + lineArray[i] + "\n");
+                            split.append(title.get(i)).append(": ").append(lineArray[i]).append("\n");
                         }
-                        String result = splitted.toString();
+                        String result = split.toString();
                         System.out.print(result);
                         System.out.println("=============================================");
                     }
