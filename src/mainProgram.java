@@ -2,7 +2,7 @@ import java.util.Scanner;
 
 public class mainProgram {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         boolean quit = false;
         while (!quit) {
             Scanner sc = new Scanner(System.in);
@@ -13,33 +13,27 @@ public class mainProgram {
                             "| 2 -> search a stop name                | \n" +
                             "| 3 -> search an arrival time            | \n" +
                             "+----------------------------------------+");
-
+            System.out.println("please select function with number 0-3: ");
             if (sc.hasNextInt()) {
-                int function = sc.nextInt();
-                sc.nextLine();
-                if (function < 0 || function > 3) {
-                    System.out.println("invalid function select");              // handle invalid int input
-                } else {                                                        // normal case
-                    try {
-                        if (function == 0) {
-                            quit = true;
-                        } else if (function == 1) {
-
-                        } else if (function == 2) {
-                            functionality2.func2();
-                        } else {
-                            functionality3.func3();
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                int function = sc.nextInt();                                    // accept user's selection
+                switch (function) {
+                    case 0:
+                        quit = true;
+                        break;
+                    case 1:
+                        break;
+                    case 2:
+                        functionality2.func2();
+                        break;
+                    case 3:
+                        functionality3.func3();
+                        break;
+                    default:
+                        System.out.println("invalid selection");
                 }
-
             } else {
                 System.out.println("please enter a number to select function"); // input is not integer
             }
-
         }
     }
-
 }
