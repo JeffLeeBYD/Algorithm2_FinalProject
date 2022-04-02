@@ -26,7 +26,7 @@ public class mainProgram {
                         } else if (function == 1) {
 
                         } else if (function == 2) {
-
+                            functionality2.func2();
                         } else {
                             functionality3.func3();
                         }

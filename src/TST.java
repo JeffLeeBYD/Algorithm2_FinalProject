@@ -165,7 +165,7 @@ public class TST {
 					"stop_lat", "stop_lon", "zone_id", "stop_url", "location_type", "parent_station"));
 			StringBuilder stopInfo = new StringBuilder();
 			for (int i = 0; i < title.size(); i++) {
-				stopInfo.append(title.get(i)).append(split[i]).append("\n");
+				stopInfo.append(title.get(i)).append(": ").append(split[i]).append("\n");
 			}
 			// put in key and value into TST
 			this.put(stop_name.toString(), stopInfo.toString());
