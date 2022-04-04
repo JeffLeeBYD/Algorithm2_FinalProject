@@ -135,10 +135,9 @@ public class TST {
     }
 
     public TST() {
-        File file = new File("stops.txt");
         Scanner sc = null;
         try {
-            sc = new Scanner(file);
+            sc = new Scanner(new File("stops.txt"));
         } catch (FileNotFoundException e) {
             System.out.println("ERROR: file not found");
         }

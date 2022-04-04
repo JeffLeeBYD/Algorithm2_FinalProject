@@ -1,3 +1,4 @@
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class mainProgram {
@@ -17,19 +18,11 @@ public class mainProgram {
             if (sc.hasNextInt()) {
                 int function = sc.nextInt();                                    // accept user's selection
                 switch (function) {
-                    case 0:
-                        quit = true;
-                        break;
-                    case 1:
-                        break;
-                    case 2:
-                        functionality2.func2();
-                        break;
-                    case 3:
-                        functionality3.func3();
-                        break;
-                    default:
-                        System.out.println("invalid selection");
+                    case 0 -> quit = true;
+                    case 1 -> functionality1.func1();
+                    case 2 -> functionality2.func2();
+                    case 3 -> functionality3.func3();
+                    default -> System.out.println("invalid selection");
                 }
             } else {
                 System.out.println("please enter a number to select function"); // input is not integer
