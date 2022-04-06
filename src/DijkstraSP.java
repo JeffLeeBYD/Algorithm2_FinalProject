@@ -5,21 +5,13 @@ import java.util.*;
 public class DijkstraSP {
     // the helper class for dijkstra
     private class Edge {
-        private double weight;
         private Vertex start;
         private Vertex end;
+        private double weight;
 
         public Edge(Vertex start, Vertex end, double weight) {
             this.start = start;
             this.end = end;
-            this.weight = weight;
-        }
-
-        public double getWeight() {
-            return weight;
-        }
-
-        public void setWeight(double weight) {
             this.weight = weight;
         }
 
@@ -37,6 +29,14 @@ public class DijkstraSP {
 
         public void setEnd(Vertex end) {
             this.end = end;
+        }
+
+        public double getWeight() {
+            return weight;
+        }
+
+        public void setWeight(double weight) {
+            this.weight = weight;
         }
     }
 
@@ -210,11 +210,13 @@ public class DijkstraSP {
         // after updated all vertices' shortest dist to start vertex, ready to return
         ArrayList<String> stops = new ArrayList<>();
         cost = end.getMinDist();
-        for (Vertex vertex = end; vertex != null; vertex = vertex.getPreviousVertex()) {
-            stops.add(0, vertex.toString());
-            stops.add(0, "-" + (vertex.getPreviousVertex() != null ? vertex.getMinDist()-vertex.getPreviousVertex().getMinDist() : 0.0) +"->");
+        if (cost != Double.MAX_VALUE) {
+            for (Vertex vertex = end; vertex != null; vertex = vertex.getPreviousVertex()) {
+                stops.add(0, vertex.toString());
+                stops.add(0, "-" + (vertex.getPreviousVertex() != null ? vertex.getMinDist() - vertex.getPreviousVertex().getMinDist() : 0.0) + "->");
+            }
+            stops.remove(0);
         }
-        stops.remove(0);
         return stops;
     }
 }
