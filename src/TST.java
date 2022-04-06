@@ -1,3 +1,6 @@
+// TST uses code from
+// https://algs4.cs.princeton.edu/52trie/TST.java.html
+
 import java.io.*;
 import java.util.*;
 
