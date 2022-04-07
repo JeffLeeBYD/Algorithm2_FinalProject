@@ -1,21 +1,18 @@
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Scanner;
+import java.util.*;
 
 
 public class functionality3 {
 
     public static void func3() throws IOException {
-        ArrayList<String> stopTimes = new ArrayList<>();        // the arraylist stores valid lines in file given
-        ArrayList<String> results = new ArrayList<>();          // the result arraylist stores the matching result
+        LinkedList<String> stopTimes = new LinkedList<>();        // the arraylist stores valid lines in file given
+        LinkedList<String> results = new LinkedList<>();          // the result arraylist stores the matching result
         // use buffered reader to speed up reading; each line is executed through a filter to filter out lines with invalid time
         try (BufferedReader br = new BufferedReader(new FileReader(new File("stop_times.txt")))) {
             String line;
             while ((line = br.readLine()) != null) {
                 if (line.split(",")[1].trim().matches("([0-9]|[1][0-9]|[2][0-3]):[0-5][0-9]:[0-5][0-9]"))
-                    stopTimes.add(line);
+                    stopTimes.add(line);            // only add in lines with valid
             }
         } catch (FileNotFoundException e) {
             System.out.println("ERROR: file not found");
@@ -47,7 +44,7 @@ public class functionality3 {
                     String[] lineArray = line.split(",");
                     StringBuilder split = new StringBuilder();
                     for (int i = 0; i < title.size(); i++) {
-                        split.append(title.get(i)).append(": ").append(lineArray[i]).append("\n");
+                        split.append(title.get(i)).append(": ").append(lineArray[i]).append("\n");  // formatting the output
                     }
                     String result = split.toString();
                     System.out.print(result);

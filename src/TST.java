@@ -147,29 +147,29 @@ public class TST {
 
         while (sc != null && sc.hasNextLine()) {
             String wholeLine = sc.nextLine();
-            if (wholeLine.endsWith(","))
-                wholeLine += " ";
+            if (wholeLine.endsWith(","))                                        // the time like 5:25:00 has a space in the prefix
+                wholeLine += " ";                                               // to search for such times, we need to add a space in the front
             String[] split = wholeLine.split(",");
-            StringBuilder stop_name = new StringBuilder(split[2]);
+            StringBuilder stop_name = new StringBuilder(split[2]);              // get the current name and format it (dealing with specific starting)
             ArrayList<String> stop_name_list = new ArrayList<String>(Arrays.asList(stop_name.toString().trim().split(" ")));
             String prefix = stop_name_list.get(0);
-            if (prefix.equals("FLAGSTOP") || prefix.equals("WB") ||                        // dealing with prefix of strings
+            if (prefix.equals("FLAGSTOP") || prefix.equals("WB") ||             // dealing with prefix of strings
                     prefix.equals("NB") || prefix.equals("SB") || prefix.equals("EB")) {
                 stop_name_list.add(prefix);
                 stop_name_list.remove(0);
             }                                                                    // move specific prefix to end
             stop_name = new StringBuilder();
             for (String s : stop_name_list) {
-                stop_name.append(s).append(" ");                                // update the new stop_name with prefix handled
+                stop_name.append(s).append(" ");                                 // update the new stop_name with prefix handled
             }
             // get the detailed information of the stops, and put it to TST for later call
             ArrayList<String> title = new ArrayList<String>(Arrays.asList("stop_id", "stop_code", "stop_name", "stop_desc",
                     "stop_lat", "stop_lon", "zone_id", "stop_url", "location_type", "parent_station"));
-            StringBuilder stopInfo = new StringBuilder();
+            StringBuilder stopInfo = new StringBuilder();                        // formatting the information
             for (int i = 0; i < title.size(); i++) {
                 stopInfo.append(title.get(i)).append(": ").append(split[i]).append("\n");
             }
-            // put in key and value into TST
+            // put in key and value into TSTs
             this.put(stop_name.toString(), stopInfo.toString());
         }
     }
