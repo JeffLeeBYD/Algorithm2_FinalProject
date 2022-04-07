@@ -3,8 +3,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class functionality2 {
-    public static void func2() {
-        TST tie = new TST();
+    public static void func2(TST tie) {
         Scanner input = new Scanner(System.in);
         System.out.println("enter bus stop's name or first few chars: ");
         String stopInput = input.nextLine();
