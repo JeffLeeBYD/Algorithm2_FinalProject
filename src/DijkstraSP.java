@@ -3,6 +3,7 @@ import java.io.FileNotFoundException;
 import java.util.*;
 
 public class DijkstraSP {
+
     // the helper class for dijkstra
     private class Edge {
         private Vertex start;
@@ -41,26 +42,26 @@ public class DijkstraSP {
     }
 
     public class Vertex implements Comparable<Vertex> {
-        public String name;
+        public String stop_id;
         private Vertex previousVertex;
         private double minDist;
         private List<Edge> edgeList;
         private boolean relaxed;
 
-        public Vertex(String name) {
-            this.name = name;
+        public Vertex(String id) {
+            this.stop_id = id;
             this.edgeList = new ArrayList<>();
             previousVertex = null;
             minDist = Double.MAX_VALUE;
             relaxed = false;
         }
 
-        public String getName() {
-            return name;
+        public String getStop_id() {
+            return stop_id;
         }
 
-        public void setName(String name) {
-            this.name = name;
+        public void setStop_id(String stop_id) {
+            this.stop_id = stop_id;
         }
 
         public List<Edge> getEdgeList() {
@@ -101,7 +102,7 @@ public class DijkstraSP {
 
         @Override
         public String toString() {
-            return name;
+            return stop_id;
         }
 
         @Override
@@ -113,13 +114,15 @@ public class DijkstraSP {
 
     public Double cost;
     public HashMap<String, Vertex> VertexesMap = new HashMap<>();
+    public HashMap<String, String> stop_id_name = new HashMap<>();
 
     public DijkstraSP()  {
-        Scanner sc1 = null;
+        Scanner sc1 = null;                                           // initialize all the scanners
         Scanner sc2 = null;
         Scanner sc3 = null;
+        Scanner sc4 = null;
         try {
-            sc1 = new Scanner(new File("stops.txt"));
+            sc1 = new Scanner(new File("stops.txt"));       // initialize the scanner from file stops.txt
         } catch (FileNotFoundException e) {
             System.out.println("ERROR: file not found");
         }
@@ -127,8 +130,9 @@ public class DijkstraSP {
         while (sc1.hasNextLine()) {
             String stop = sc1.nextLine();
             String[] stopSplit = stop.split(",");               // add new vertex to graph from file stops.txt
-            Vertex v = new Vertex(stopSplit[0]);
-            VertexesMap.put(stopSplit[0], v);
+            Vertex v = new Vertex(stopSplit[0]);                      // this file is used to create all vertices in the map, and create a corresponding between
+            VertexesMap.put(stopSplit[0], v);                         // the stop's name and vertex created
+            stop_id_name.put(stopSplit[0], stopSplit[2]);
         }
         sc1.close();
 
@@ -142,24 +146,23 @@ public class DijkstraSP {
         sc2.nextLine();                                             // skip the first line in transfer.txt
         while (sc2.hasNextLine()) {
             String transfer = sc2.nextLine();
-            String[] transferSplit = transfer.split(",");
+            String[] transferSplit = transfer.split(",");         // add weight for edges from transfer.txt
             String start = transferSplit[0];
             String end = transferSplit[1];
             double weight = 0;
-            if (transferSplit[2].equals("0")) {
+            if (transferSplit[2].equals("0")) {                         // transfer type 0: weight is 2
                 weight = 2.0;
             }
-            if (transferSplit[2].equals("2")) {
+            if (transferSplit[2].equals("2")) {                         // transfer type 2: weight is minimum transfer time divided by 100
                 weight = Double.parseDouble(transferSplit[3]) / 100;
             }
             Vertex vertex1 = VertexesMap.get(start);
             Vertex vertex2 = VertexesMap.get(end);
-            vertex1.addNeighbour(new Edge(vertex1, vertex2, weight));
+            vertex1.addNeighbour(new Edge(vertex1, vertex2, weight));   // connect the two vertices with the weighted edge just created
         }
         sc2.close();
 
 
-        ArrayList<String> tripInfos = new ArrayList<>();
         try {
             sc3 = new Scanner(new File("stop_times.txt"));      // add new edges from stop_times.txt
         } catch (FileNotFoundException e) {
@@ -167,23 +170,29 @@ public class DijkstraSP {
         }
         assert sc3 != null;
         sc3.nextLine();
-        while (sc3.hasNextLine()) {
-            tripInfos.add(sc3.nextLine());
+        try {
+            sc4 = new Scanner(new File("stop_times.txt"));      // add new edges from stop_times.txt
+        } catch (FileNotFoundException e) {
+            System.out.println("ERROR: file not found");
         }
-        sc3.close();
-
-
-        for (int i = 0; i < tripInfos.size()-1; i++) {
-            String trip_id1 = tripInfos.get(i).split(",")[0];
-            String stop_id1 = tripInfos.get(i).split(",")[3];
-            String trip_id2 = tripInfos.get(i+1).split(",")[0];
-            String stop_id2 = tripInfos.get(i+1).split(",")[3];
-            Vertex start = VertexesMap.get(stop_id1);
-            Vertex end = VertexesMap.get(stop_id2);
-            if (trip_id1.equals(trip_id2)) {
-                start.addNeighbour(new Edge(start, end, 1.0));      // add edge
+        assert sc4 != null;
+        sc4.nextLine();                                                  // use two pointers get each two lines in stop_times and and edges if in need
+        sc4.nextLine();
+        while (sc4.hasNextLine()) {
+            String last = sc3.nextLine();
+            String current = sc4.nextLine();
+            String last_trip_id = last.split(",")[0];
+            String current_trip_id = current.split(",")[0];
+            String last_stop_id = last.split(",")[3];
+            String current_stop_id = current.split(",")[3];
+            if (last_trip_id.equals(current_trip_id)){
+                Vertex start = VertexesMap.get(last_stop_id);
+                Vertex end = VertexesMap.get(current_stop_id);
+                start.addNeighbour(new Edge(start, end, 1.0));      // add edge if the two stops have a same trip_id
             }
         }
+        sc3.close();
+        sc4.close();
     }
 
 
@@ -211,8 +220,11 @@ public class DijkstraSP {
         cost = end.getMinDist();
         if (cost != Double.MAX_VALUE) {
             for (Vertex vertex = end; vertex != null; vertex = vertex.getPreviousVertex()) {
-                stops.add(0, vertex.toString());
-                stops.add(0, "-" + (vertex.getPreviousVertex() != null ? vertex.getMinDist() - vertex.getPreviousVertex().getMinDist() : 0.0) + "->");
+                stops.add(0, stop_id_name.get(vertex.toString()));
+                stops.add(0, "\n");
+                stops.add(0, "\n       |" +
+                                           "\n      " + (vertex.getPreviousVertex() != null ? vertex.getMinDist() - vertex.getPreviousVertex().getMinDist() : 0.0) +
+                                           "\n       |");
             }
             stops.remove(0);
         }
