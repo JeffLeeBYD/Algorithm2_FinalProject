@@ -182,7 +182,6 @@ public class DijkstraSP {
             Vertex end = VertexesMap.get(stop_id2);
             if (trip_id1.equals(trip_id2)) {
                 start.addNeighbour(new Edge(start, end, 1.0));      // add edge
-                VertexesMap.put(start.name, start);
             }
         }
     }
