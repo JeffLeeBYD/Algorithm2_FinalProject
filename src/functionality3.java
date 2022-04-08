@@ -9,7 +9,7 @@ public class functionality3 {
 
 
         Scanner input = new Scanner(System.in);
-        System.out.println("enter arrival time in hh:mm:ss (if hh < 10, 0 pre-fix is unnecessary) ");
+        System.out.println("enter arrival time in hh:mm:ss (if hh < 10, 0 pre-fix is unnecessary):");
         String inputTime = input.next();
         if (inputTime.length() != 8 && inputTime.length() != 7) {
             System.out.println("invalid input");
